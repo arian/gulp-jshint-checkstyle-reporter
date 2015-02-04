@@ -1,6 +1,6 @@
 {
   "name": "gulp-jshint-checkstyle-reporter",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "JSHint checkstyle reporter which outputs to the stream",
   "main": "index.js",
   "keywords": [
