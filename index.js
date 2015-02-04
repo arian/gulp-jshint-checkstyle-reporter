@@ -1,12 +1,39 @@
 // Author: Boy Baukema
 // Author: Michael Weibel
+// Author: Arian Stolwijk
 // http://github.com/relaxnow
-var fs = require('fs');
 
-module.exports =
-{
-  reporter: function (results, data, opts)
-  {
+var through = require('through2');
+var File = require('vinyl');
+
+module.exports = function(opts) {
+
+  opts = opts || {};
+
+  var results = [];
+
+  function write(file, __, cb) {
+    if (!file.jshint.success) {
+      results = results.concat(file.jshint.results);
+    }
+    cb();
+  }
+
+  function end() {
+    var checkstyle = new File({
+      path: opts.filename || 'checkstyle.xml',
+      contents: new Buffer(reporters.reporter(results, null, opts))
+    });
+    this.push(checkstyle);
+    this.push(null);
+  }
+
+  return through.obj(write, end);
+
+};
+
+var reporters = {
+  reporter: function(results, data, opts) {
     "use strict";
 
     var files = {},
@@ -31,7 +58,7 @@ module.exports =
       return s || "";
     }
 
-    results.forEach(function (result) {
+    results.forEach(function(result) {
       // Register the file
       result.file = result.file.replace(/^\.\//, '');
       if (!files[result.file]) {
@@ -44,9 +71,23 @@ module.exports =
         errorMessage += ' (' + result.error.code + ')';
       }
 
+      var typeNo = result.error.code;
+      var severity = '';
+      switch (typeNo[0]) {
+        case 'I':
+          severity = 'info';
+          break;
+        case 'W':
+          severity = 'warning';
+          break;
+        case 'E':
+          severity = 'error';
+          break;
+      }
+
       // Add the error
       files[result.file].push({
-        severity: 'error',
+        severity: severity,
         line: result.error.line,
         column: result.error.character,
         message: errorMessage,
@@ -79,9 +120,6 @@ module.exports =
 
     out.push("</checkstyle>");
 
-    var filename = process.env.JSHINT_CHECKSTYLE_FILE || "checkstyle.xml";
-    fs.writeFileSync(filename, out.join('\n'));
-
-    console.log("Output written to " + filename);
+    return out.join("\n");
   }
 };

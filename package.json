@@ -1,20 +1,28 @@
 {
-  "name": "jshint-checkstyle-file-reporter",
+  "name": "gulp-jshint-checkstyle-reporter",
   "version": "0.0.1",
-  "description": "JSHint checkstyle reporter which outputs to a file",
+  "description": "JSHint checkstyle reporter which outputs to the stream",
   "main": "index.js",
-  "keywords": ["jshint", "checkstyle", "jenkins"],
+  "keywords": [
+    "jshint",
+    "checkstyle",
+    "jenkins"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/mila-labs/jshint-checkstyle-file-reporter.git"
+    "url": "git://github.com/arian/gulp-jshint-checkstyle-reporter.git"
   },
   "bugs": {
-    "url": "https://github.com/mila-labs/jshint-checkstyle-file-reporter/issues"
+    "url": "https://github.com/arian/jshint-checkstyle-reporter/issues"
   },
-  "homepage": "https://github.com/mila-labs/jshint-checkstyle-file-reporter",
-  "author": "Michael Weibel <michael@mila.com>",
-  "license": "MIT"
+  "homepage": "https://github.com/arian/jshint-checkstyle-reporter",
+  "author": "Arian Stolwijk",
+  "license": "MIT",
+  "dependencies": {
+    "through2": "^0.6.3",
+    "vinyl": "^0.4.6"
+  }
 }
