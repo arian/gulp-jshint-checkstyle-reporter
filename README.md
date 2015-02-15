@@ -20,7 +20,7 @@ gulp.task('jshint', function() {
 	gulp.src('*.js')
 		.pipe(jshint())
 		.pipe(checkstyleReporter())
-		.dest('target/checkstyle-reports');
+		.pipe(gulp.dest('target/checkstyle-reports'));
 });
 ```
 
