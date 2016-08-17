@@ -13,7 +13,7 @@ module.exports = function(opts) {
   var results = [];
 
   function write(file, __, cb) {
-    if (!file.jshint.success) {
+    if (file.jshint && !file.jshint.success) {
       results = results.concat(file.jshint.results);
     }
     cb();
